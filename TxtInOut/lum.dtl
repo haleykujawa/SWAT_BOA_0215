@@ -1,0 +1,340 @@
+lum.dtl: written by SWAT+ editor v2.0.4 on 2022-01-17 18:35
+22
+
+name                     conds      alts      acts  
+200lb_y2_fall              4         3         7  	!! fall soil phosphorus test - split fall/spring application
+var                        obj   obj_num           lim_var     lim_op     lim_const                        alt1      alt2  
+jday                       dat         0              null          -     293.00000                          =         =        -	!! Oct 20
+year_rot                   dat         0              null          -       2.00000                          =         =        -	!! fall after soybeans?
+p_labile                   hru         0              null          -     23.700000                          <        >=        -	!! soil labile P
+year_rot                   hru         0              null          -       2.00000                          -         -        > 	!! reset year of rotation
+act_typ                    obj   obj_num              name     option         const    const2           fp    outcome           
+fertilize                  hru         0        fall_low_p     elem_n      24.70000   1.00000    broadcast   y         n  	n 
+fertilize                  hru         0        fall_low_p     elem_p      50.90000   1.00000    broadcast   y         n 	n 
+fertilize                  hru         0       fall_high_p     elem_n       0.00000   1.00000    broadcast   n         y  	n 
+fertilize                  hru         0       fall_high_p     elem_p       0.00000   1.00000    broadcast   n         y 	n 
+fert_future                frt         1     spring_high_p     elem_n       0.00000 125.00000       inject   n         y	n   
+fert_future                frt         2     spring_high_p     elem_p       0.00000 125.00000       inject   n         y	n
+rot_reset                  hru         0           reset_1       null       1.00000   1.00000         null   n         n       	y
+
+name                     conds      alts      acts  
+200lb_y1_fall              4         3         7  	!! fall soil phosphorus test - split fall/spring application
+var                        obj   obj_num           lim_var     lim_op     lim_const                        alt1      alt2  
+jday                       dat         0              null          -     293.00000                          =         =        -	!! Oct 20
+year_rot                   dat         0              null          -       1.00000                          =         =        -	!! fall after soybeans?
+p_labile                   hru         0              null          -     23.700000                          <        >=        -	!! soil labile P
+year_rot                   hru         0              null          -       2.00000                          -         -        > 	!! reset year of rotation
+act_typ                    obj   obj_num              name     option         const    const2           fp    outcome           
+fertilize                  hru         0        fall_low_p     elem_n      24.70000   1.00000    broadcast   y         n  	n 
+fertilize                  hru         0        fall_low_p     elem_p      50.90000   1.00000    broadcast   y         n 	n 
+fertilize                  hru         0       fall_high_p     elem_n       0.00000   1.00000    broadcast   n         y  	n 
+fertilize                  hru         0       fall_high_p     elem_p       0.00000   1.00000    broadcast   n         y 	n 
+fert_future                frt         1     spring_high_p     elem_n       0.00000 125.00000       inject   n         y	n   
+fert_future                frt         2     spring_high_p     elem_p       0.00000 125.00000       inject   n         y	n
+rot_reset                  hru         0           reset_1       null       1.00000   1.00000         null   n         n       	y
+
+name                     conds      alts      acts  
+150lb_y2_CSWS              4         3         7  	!! fall soil phosphorus test - split fall/spring application
+var                        obj   obj_num           lim_var     lim_op     lim_const                        alt1      alt2  
+jday                       dat         0              null          -     293.00000                          =         =        -	!! Oct 20
+year_rot                   dat         0              null          -       2.00000                          =         =        -	!! fall after soybeans?
+p_labile                   hru         0              null          -     23.700000                          <        >=        -	!! soil labile P
+year_rot                   hru         0              null          -       2.00000                          -         -        > 	!! reset year of rotation
+act_typ                    obj   obj_num              name     option         const    const2           fp    outcome           
+fertilize                  hru         0        fall_low_p     elem_n      18.50000   1.00000    broadcast   y         n  	n 
+fertilize                  hru         0        fall_low_p     elem_p      38.20000   1.00000    broadcast   y         n 	n 
+fertilize                  hru         0       fall_high_p     elem_n      12.30000   1.00000    broadcast   n         y  	n 
+fertilize                  hru         0       fall_high_p     elem_p      25.50000   1.00000    broadcast   n         y 	n 
+fert_future                frt         1     spring_high_p     elem_n       0.00000 125.00000       inject   n         y	n   
+fert_future                frt         2     spring_high_p     elem_p       0.00000 125.00000       inject   n         y	n
+rot_reset                  hru         0           reset_1       null       1.00000   1.00000         null   n         n       	y
+
+name                     conds      alts      acts  
+150lb_y2_fall              4         3         7  	!! fall soil phosphorus test - split fall/spring application
+var                        obj   obj_num           lim_var     lim_op     lim_const                        alt1      alt2  
+jday                       dat         0              null          -     293.00000                          =         =        -	!! Oct 20
+year_rot                   dat         0              null          -       2.00000                          =         =        -	!! fall after soybeans?
+p_labile                   hru         0              null          -     23.700000                          <        >=        -	!! soil labile P
+year_rot                   hru         0              null          -       2.00000                          -         -        > 	!! reset year of rotation
+act_typ                    obj   obj_num              name     option         const    const2           fp    outcome           
+fertilize                  hru         0        fall_low_p     elem_n      18.50000   1.00000    broadcast   y         n  	n 
+fertilize                  hru         0        fall_low_p     elem_p      38.20000   1.00000    broadcast   y         n 	n 
+fertilize                  hru         0       fall_high_p     elem_n       0.00000   1.00000    broadcast   n         y  	n 
+fertilize                  hru         0       fall_high_p     elem_p       0.00000   1.00000    broadcast   n         y 	n 
+fert_future                frt         1     spring_high_p     elem_n       0.00000 125.00000       inject   n         y	n   
+fert_future                frt         2     spring_high_p     elem_p       0.00000 125.00000       inject   n         y	n
+rot_reset                  hru         0           reset_1       null       1.00000   1.00000         null   n         n       	y
+
+name                     conds      alts      acts  
+150lb_y1_fall              4         3         7  	!! fall soil phosphorus test - split fall/spring application
+var                        obj   obj_num           lim_var     lim_op     lim_const                        alt1      alt2  
+jday                       dat         0              null          -     293.00000                          =         =        -	!! Oct 20
+year_rot                   dat         0              null          -       1.00000                          =         =        -	!! fall after soybeans?
+p_labile                   hru         0              null          -     23.700000                          <        >=        -	!! soil labile P
+year_rot                   hru         0              null          -       2.00000                          -         -        > 	!! reset year of rotation
+act_typ                    obj   obj_num              name     option         const    const2           fp    outcome           
+fertilize                  hru         0        fall_low_p     elem_n      18.50000   1.00000    broadcast   y         n  	n 
+fertilize                  hru         0        fall_low_p     elem_p      38.20000   1.00000    broadcast   y         n 	n 
+fertilize                  hru         0       fall_high_p     elem_n       0.00000   1.00000    broadcast   n         y  	n 
+fertilize                  hru         0       fall_high_p     elem_p       0.00000   1.00000    broadcast   n         y 	n 
+fert_future                frt         1     spring_high_p     elem_n       0.00000 125.00000       inject   n         y	n   
+fert_future                frt         2     spring_high_p     elem_p       0.00000 125.00000       inject   n         y	n
+rot_reset                  hru         0           reset_1       null       1.00000   1.00000         null   n         n       	y
+
+name                     conds      alts      acts  
+200lb_y3_fall              4         3         7  	!! fall soil phosphorus test - split fall/spring application
+var                        obj   obj_num           lim_var     lim_op     lim_const                        alt1      alt2  
+jday                       dat         0              null          -     293.00000                          =         =        -	!! Oct 20
+year_rot                   dat         0              null          -       3.00000                          =         =        -	!! fall after soybeans?
+p_labile                   hru         0              null          -     23.700000                          <        >=        -	!! soil labile P
+year_rot                   hru         0              null          -       3.00000                          -         -        > 	!! reset year of rotation
+act_typ                    obj   obj_num              name     option         const    const2           fp    outcome           
+fertilize                  hru         0        fall_low_p     elem_n      24.70000   1.00000    broadcast   y         n  	n 
+fertilize                  hru         0        fall_low_p     elem_p      50.90000   1.00000    broadcast   y         n 	n 
+fertilize                  hru         0       fall_high_p     elem_n       0.00000   1.00000    broadcast   n         y  	n 
+fertilize                  hru         0       fall_high_p     elem_p       0.00000   1.00000    broadcast   n         y 	n 
+fert_future                frt         1     spring_high_p     elem_n       0.00000  91.00000       inject   n         y	n   
+fert_future                frt         2     spring_high_p     elem_p       0.00000  91.00000       inject   n         y	n
+rot_reset                  hru         0           reset_1       null       1.00000   1.00000         null   n         n       	y
+
+name                     conds      alts      acts  
+p_fall_test                4         3         7  	!! fall soil phosphorus test - split fall/spring application
+var                        obj   obj_num           lim_var     lim_op     lim_const                        alt1      alt2  
+jday                       dat         0              null          -     293.00000                          =         =        -	!! Oct 20
+year_rot                   dat         0              null          -       2.00000                          =         =        -	!! fall after soybeans?
+p_labile                   hru         0              null          -     21.700000                          <        >=        -	!! soil labile P
+year_rot                   hru         0              null          -       3.00000                          -         -        > 	!! reset year of rotation
+act_typ                    obj   obj_num              name     option         const    const2           fp    outcome           
+fertilize                  hru         0        fall_low_p     elem_n      84.10000   1.00000    broadcast   y         n  	n 
+fertilize                  hru         0        fall_low_p     elem_p       5.90000   1.00000    broadcast   y         n 	n  
+fertilize                  hru         0       fall_high_p     elem_n      24.70000   1.00000    broadcast   n         y  	n 
+fertilize                  hru         0       fall_high_p     elem_p      50.90000   1.00000    broadcast   n         y 	n 
+fert_future                frt         1     spring_high_p     elem_n      59.40000 125.00000       inject   n         y	n   
+fert_future                frt         2     spring_high_p     elem_p       5.90000 125.00000       inject   n         y	n
+rot_reset                  hru         0           reset_1       null       1.00000   1.00000         null   n         n       	y
+  
+name                     conds      alts      acts  
+pl_hv_wwht                   6         5         3  
+var                        obj   obj_num           lim_var            lim_op     lim_const      alt1      alt2      alt3      alt4      alt5  
+jday                       hru         0              null                 -     200.00000         -         -         =         -         -  
+jday                       hru         0              null                 -     330.00000         -         -         -         -         =  
+phu_base0                  hru         0              null                 -       0.85000         >         -         -         -         -  
+phu_plant                  hru         0           phu_mat                 -       1.15000         -         >         -         -         -  
+soil_water                 hru         0                fc                 *       1.05000         <         <         -         -         -  
+year_rot                   hru         0              null                 -       1.00000         -         -         -         >         -  
+act_typ                    obj   obj_num              name            option         const        const2                fp  outcome           
+harvest_kill               hru         0        grain_harv              wwht       0.00000       1.00000             grain  n   y   y   n   n   
+plant                      hru         0        plant_teff              wwht       0.00000       1.00000              null  y   n   n   n   y   
+rot_reset                  hru         0           reset_1              null       1.00000       1.00000              null  n   n   n   y   n   
+
+name                     conds      alts      acts  
+pl_hv_corn_sb                7         7         5  
+var                        obj   obj_num           lim_var            lim_op     lim_const      alt1      alt2      alt3      alt4      alt5      alt6      alt7  
+jday                       hru         0              null                 -     350.00000         -         -         -         -         =         =         -  
+phu_base0                  hru         0              null                 -       0.15000         >         >         -         -         -         -         -  
+phu_plant                  hru         0           phu_mat                 -       1.15000         -         -         >         >         -         -         -  
+soil_water                 hru         0                fc                 *       1.05000         <         <         <         <         -         -         -  
+year_rot                   hru         0              null                 -       2.00000         -         -         -         -         -         -         >  
+year_rot                   hru         0              null                 -       2.00000         -         =         -         =         -         =         -  
+year_rot                   hru         0              null                 -       1.00000         =         -         =         -         =         -         -  
+act_typ                    obj   obj_num              name            option         const        const2                fp  outcome           
+harvest_kill               hru         0        grain_harv              soyb       0.00000       0.00000              null  n   n   n   y   n   y   n   
+harvest_kill               hru         0        grain_harv              corn       0.00000       0.00000              null  n   n   y   n   y   n   n   
+plant                      hru         0        plant_soyb              soyb       0.00000       0.00000              null  n   y   n   n   n   n   n   
+plant                      hru         0        plant_corn              corn       0.00000       0.00000              null  y   n   n   n   n   n   n   
+rot_reset                  hru         0           reset_2              null       1.00000       1.00000              null  n   n   n   n   n   n   y   
+
+name                     conds      alts      acts  
+pl_hv_corn                   6         5         3  
+var                        obj   obj_num           lim_var            lim_op     lim_const      alt1      alt2      alt3      alt4      alt5  
+jday                       hru         0              null                 -     350.00000         -         -         =         -         -  
+phu_base0                  hru         0              null                 -       0.15000         >         -         -         -         -  
+phu_base0                  hru         0              null                 -       0.30000         -         -         -         -         >  
+phu_plant                  hru         0           phu_mat                 -       1.15000         -         >         -         -         -  
+soil_water                 hru         0                fc                 *       2.05000         <         <         -         -         -  
+year_rot                   hru         0              null                 -       1.00000         -         -         -         >         -  
+act_typ                    obj   obj_num              name            option         const        const2                fp  outcome           
+harvest_kill               hru         0        grain_harv              corn       0.00000       1.00000             grain  n   y   y   n   n   
+plant                      hru         0        plant_corn              corn       0.00000       1.00000              null  y   n   n   n   y   
+rot_reset                  hru         0           reset_1              null       1.00000       1.00000              null  n   n   n   y   n   
+
+name                     conds      alts      acts  
+pl_hv_ccsws                 11        10         7  
+var                        obj   obj_num           lim_var            lim_op     lim_const      alt1      alt2      alt3      alt4      alt5      alt6      alt7      alt8      alt9     alt10  
+days_harv                  hru         0              null                 -       7.00000         -         -         =         =         -         -         -         -         -         -  
+jday                       hru         0              null                 -     150.00000         -         -         -         -         -         -         -         -         -         =  
+jday                       hru         0              null                 -     350.00000         -         -         -         -         -         -         -         =         =         -  
+phu_base0                  hru         0              null                 -       0.15000         >         >         -         -         -         -         -         -         -         -  
+phu_plant                  hru         0           phu_mat                 -       1.15000         -         -         -         -         >         >         >         -         -         -  
+soil_water                 hru         0                fc                 *       1.05000         <         <         -         <         <         <         <         -         -         -  
+year_rot                   hru         0              null                 -       4.00000         -         -         -         -         -         -         -         -         -         -  
+year_rot                   hru         0              null                 -       4.00000         -         -         =         -         -         -         =         -         -         =  
+year_rot                   hru         0              null                 -       3.00000         -         =         -         =         -         -         -         -         -         -  
+year_rot                   hru         0              null                 -       2.00000         -         -         -         -         -         >         -         -         >         -  
+year_rot                   hru         0              null                 -       3.00000         <         -         -         -         <         -         -         <         -         -  
+act_typ                    obj   obj_num              name            option         const        const2                fp  outcome           
+harvest_kill               hru         0        grain_harv              wwht       0.00000       0.00000              null  n   n   n   n   n   n   y   n   n   y   
+harvest_kill               hru         0        grain_harv              soyb       0.00000       0.00000              null  n   n   n   n   n   y   n   n   y   n   
+harvest_kill               hru         0        grain_harv              corn       0.00000       0.00000              null  n   n   n   n   y   n   n   y   n   n   
+plant                      hru         0        plant_wwht              wwht       0.00000       0.00000              null  n   n   n   y   n   n   n   n   n   n   
+plant                      hru         0        plant_soyb              soyb       0.00000       0.00000              null  n   y   y   n   n   n   n   n   n   n   
+plant                      hru         0        plant_corn              corn       0.00000       0.00000              null  y   n   n   n   n   n   n   n   n   n   
+rot_reset                  hru         0           reset_4              null       1.00000       1.00000              null  n   n   n   n   n   n   n   n   n   n   
+
+name                     conds      alts      acts  
+fert_rot_1                   5         2         2  
+var                        obj   obj_num           lim_var            lim_op     lim_const      alt1      alt2  
+n_stress                   hru         0              null                 -       0.90000         -         <  
+phu_base0                  hru         0              null                 -       0.12000         >         -  
+phu_plant                  hru         0           phu_mat                 -       1.05000         -         <  
+plant_gro                  hru         0                 y                 -       1.00000         -         =  
+year_rot                   hru         0              null                 -       1.00000         =         =  
+act_typ                    obj   obj_num              name            option         const        const2                fp  outcome           
+fertilize                  hru         0        side_dress              urea      50.00000      50.00000              null  n   y   
+fertilize                  hru         0    ammonia_spring           anh_nh3     160.00000     160.00000              null  y   n   
+
+name                     conds      alts      acts  
+irr_str8                     1         1         1  
+var                        obj   obj_num           lim_var            lim_op     lim_const      alt1  
+w_stress                   hru         0              null                 -       0.80000         <  
+act_typ                    obj   obj_num              name            option         const        const2                fp  outcome           
+irr_demand                 hru         0         drip_high              drip      25.40000      25.40000              null  y   
+
+name                     conds      alts      acts  
+irr_str8_unlim               1         1         1  
+var                        obj   obj_num           lim_var            lim_op     lim_const      alt1  
+w_stress                   hru         0              null                 -       0.80000         <  
+act_typ                    obj   obj_num              name            option         const        const2                fp  outcome           
+irr_demand                 hru         0         drip_high              drip      25.40000      25.40000              null  y   
+
+name                     conds      alts      acts  
+irr_sw75                     2         1         1  
+var                        obj   obj_num           lim_var            lim_op     lim_const      alt1  
+plant_gro                  hru         0                 y                 -       0.00000         =  
+soil_water                 hru         0                fc                 -       0.75000         <  
+act_typ                    obj   obj_num              name            option         const        const2                fp  outcome           
+irr_demand                 hru         0    sprinkler_high         sprinkler      50.00000      50.00000              null  y   
+
+name                     conds      alts      acts  
+irr_sw75_unlim               2         1         1  
+var                        obj   obj_num           lim_var            lim_op     lim_const      alt1  
+plant_gro                  hru         0                 y                 -       0.00000         =  
+soil_water                 hru         0                fc                 -       0.75000         <  
+act_typ                    obj   obj_num              name            option         const        const2                fp  outcome           
+irr_demand                 hru         0    sprinkler_high         sprinkler      50.00000      50.00000              null  y   
+
+name                     conds      alts      acts  
+control_drainage             6         4         4  
+var                        obj   obj_num           lim_var            lim_op     lim_const      alt1      alt2      alt3      alt4  
+jday                       hru         0              null                 -      65.00000         =         -         -         -  
+days_harv                  hru         0              null                 -      14.00000         -         >         -         -  
+jday                       hru         0              null                 -     295.00000         -         >         -         -  
+phu_plant                  hru         0              null                 -       0.50000         -         -         >         -  
+soil_water                 hru         0           fcap_fr                 *       0.50000         -         -         <         -  
+phu_plant                  hru         0              null                 -       1.00000         -         -         -         >  
+act_typ                    obj   obj_num              name            option         const        const2                fp  outcome           
+drain_control              hru         0       open_spring              null       1.00000       1.00000              null  y   n   n   n   
+drain_control              hru         0        close_fall              null       0.00000       1.00000              null  n   y   n   n   
+drain_control              hru         0      close_summer              null       0.00000       1.00000              null  n   n   y   n   
+drain_control              hru         0       open_summer              null       1.00000       1.00000              null  n   n   n   y   
+
+name                     conds      alts      acts  
+hay_cutting                  3         1         1  
+var                        obj   obj_num           lim_var            lim_op     lim_const      alt1  
+soil_water                 hru         0                fc                 *       1.50000         <  
+phu_plant                  hru         0           phu_mat                 -       0.50000         >  
+biomass                    hru         0              null                 -    3000.00000         >  
+act_typ                    obj   obj_num              name            option         const        const2                fp  outcome           
+harvest                    hru         0          hay_harv              alfa       0.00000       3.00000           biomass  y   
+
+name                     conds      alts      acts  
+forest_cut                   2         1         1  
+var                        obj   obj_num           lim_var            lim_op     lim_const      alt1  
+cur_yrs_mat                hru         0              null                 -      20.00000         =  
+jday                       hru         0              null                 -     295.00000         =  
+act_typ                    obj   obj_num              name            option         const        const2                fp  outcome           
+harvest                    hru         0         tree_harv              frsd       0.00000       0.00000        forest_cut  y   
+
+name                     conds      alts      acts  
+graze_winter                 3         2         1  
+var                        obj   obj_num           lim_var            lim_op     lim_const      alt1      alt2  
+jday                       hru         0              null                 -     295.00000         >         -  
+jday                       hru         0              null                 -      85.00000         -         <  
+biomass                    hru         0              null                 -    3000.00000         >         >  
+act_typ                    obj   obj_num              name            option         const        const2                fp  outcome           
+graze                      hru         0        winter_low          beef_low       0.00000       0.00000              null  y   y   
+
+name                     conds      alts      acts  
+graze_summer                 3         1         1  
+var                        obj   obj_num           lim_var            lim_op     lim_const      alt1  
+jday                       hru         0              null                 -     120.00000         >  
+jday                       hru         0              null                 -     200.00000         <  
+biomass                    hru         0              null                 -    3000.00000         >  
+act_typ                    obj   obj_num              name            option         const        const2                fp  outcome           
+graze                      hru         0       summer_high         beef_high       0.00000       0.00000              null  y   
+
+name                     conds      alts      acts  
+fert_sprg_side               5         2         2  
+var                        obj   obj_num           lim_var            lim_op     lim_const      alt1      alt2  
+phu_base0                  hru         0              null                 -       0.12000         >         -  
+year_rot                   hru         0              null                 -       1.00000         =         =  
+n_stress                   hru         0              null                 -       0.90000         -         <  
+plant_gro                  hru         0                 y                 -       1.00000         -         =  
+phu_plant                  hru         0           phu_mat                 -       1.05000         -         <  
+act_typ                    obj   obj_num              name            option         const        const2                fp  outcome           
+fertilize                  hru         0    ammonia_spring           anh_nh3     160.00000       1.00000            inject  y   n   
+fertilize                  hru         0        side_dress              urea      50.00000       2.00000         broadcast  n   y   
+
+name                     conds      alts      acts  
+pl_grow_sum                  2         2         1  
+var                        obj   obj_num           lim_var            lim_op     lim_const      alt1      alt2  
+phu_base0                  hlt         0              null                 -       0.15000         >         <  
+phu_base0                  hlt         0              null                 -       0.20000         <         -  
+act_typ                    obj   obj_num              name            option         const        const2                fp  outcome           
+grow_init                  hlt         0      start_growth              file       0.00000       0.00000              null  y   n   
+
+name                     conds      alts      acts  
+pl_end_sum                   2         3         1  
+var                        obj   obj_num           lim_var            lim_op     lim_const      alt1      alt2      alt3  
+phu_base0                  hlt         0              null                 -       0.50000         >         <         -  
+jday                       hlt         0              null                 -     330.00000         -         -         =  
+act_typ                    obj   obj_num              name            option         const        const2                fp  outcome           
+grow_end                   hlt         0        end_growth              file       0.00000       0.00000              null  y   n   y   
+
+name                     conds      alts      acts  
+pl_grow_win                  2         3         1  
+var                        obj   obj_num           lim_var            lim_op     lim_const      alt1      alt2      alt3  
+phu_base0                  hlt         0              null                 -       0.75000         >         <         -  
+jday                       hlt         0              null                 -     330.00000         -         -         =  
+act_typ                    obj   obj_num              name            option         const        const2                fp  outcome           
+grow_init                  hlt         0      start_growth              wwht       0.00000       0.00000              null  y   n   y   
+
+name                     conds      alts      acts  
+pl_end_win                   2         2         1  
+var                        obj   obj_num           lim_var            lim_op     lim_const      alt1      alt2  
+phu_base0                  hlt         0              null                 -       0.20000         >         <  
+phu_base0                  hlt         0              null                 -       0.25000         <         -  
+act_typ                    obj   obj_num              name            option         const        const2                fp  outcome           
+grow_end                   hlt         0        end_growth             grain       0.00000       0.00000              null  y   n   
+
+name                     conds      alts      acts  
+cn_update_corn               1         1         1  
+var                        obj   obj_num           lim_var            lim_op     lim_const      alt1  
+plant_name_gro             hru         0              corn                 -       0.00000         =  
+act_typ                    obj   obj_num              name            option         const        const2                fp  outcome           
+pest_apply                 hru         0           ffa_app               ffa      99.00000       1.00000            inject  y   
+
+name                     conds      alts      acts  
+pl_hv_soyb                   6         5         3  
+var                        obj   obj_num           lim_var            lim_op     lim_const      alt1      alt2      alt3      alt4      alt5  
+jday                       hru         0              null                 -     350.00000         -         -         =         -         -  
+phu_base0                  hru         0              null                 -       0.15000         >         -         -         -         -  
+phu_base0                  hru         0              null                 -       0.30000         -         -         -         -         >  
+phu_plant                  hru         0           phu_mat                 -       1.15000         -         >         -         -         -  
+soil_water                 hru         0                fc                 *       2.05000         <         <         -         -         -  
+year_rot                   hru         0              null                 -       1.00000         -         -         -         >         -  
+act_typ                    obj   obj_num              name            option         const        const2                fp  outcome           
+harvest_kill               hru         0        grain_harv              soyb       0.00000       1.00000             grain  n   y   y   n   n   
+plant                      hru         0        plant_soyb              soyb       0.00000       1.00000              null  y   n   n   n   y   
+rot_reset                  hru         0           reset_1              null       1.00000       1.00000              null  n   n   n   y   n   
+

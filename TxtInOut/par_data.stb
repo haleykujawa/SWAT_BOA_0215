@@ -1,0 +1,5 @@
+par_name,min,max,chgtype
+surlag,0.5,12,absval
+crk,0.1,0.5,absval
+pperco,0.1,0.95,absval
+alpha,0,1,absval

@@ -1,0 +1,43 @@
+optimization_options:
+    objective_options: # can also use the key moo
+        objectives:
+            - name: res1_sedaccum
+              metric: mean
+            - name: res2_sedaccum
+              metric: mean
+
+    scheduler:
+        total_trials: 5
+
+parameters:
+    x0:
+        'bounds': [ 5, 20 ]
+        'type': 'range'
+        'value_type': 'float'
+    x1:
+        'bounds': [ 5, 20]
+        'type': 'range'
+        'value_type': 'float'
+    x2:
+        'bounds': [ 5, 20 ]
+        'type': 'range'
+        'value_type': 'float'
+    x3:
+        'bounds': [ 0.9, 1]
+        'type': 'range'
+        'value_type': 'float'
+    x4:
+        'bounds': [ 0.9, 1 ]
+        'type': 'range'
+        'value_type': 'float'
+    x5:
+        'bounds': [ 0.9, 1]
+        'type': 'range'
+        'value_type': 'float'
+
+script_options:
+    run_model_run_cmd: Rscript EstuaryPaccum_BOA.R
+
+model_options:
+    input_size: 15
+    model_dir: .

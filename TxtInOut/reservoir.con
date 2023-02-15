@@ -1,0 +1,5 @@
+reservoir.con: written by SWAT+ editor v2.0.4 on 2022-01-21 12:22
+      id  name                gis_id          area           lat           lon          elev       res               wst       cst      ovfl      rule   out_tot       obj_typ    obj_id       hyd_typ          frac  
+       1  res1                     1      14.15065      41.37724     -82.51324     174.28000         1     s41378n82508w         0         0         0         1           sdc         1           tot       1.00000  
+       2  res2                     2      14.15065      41.37724     -82.51324     174.28000         2     s41378n82508w         0         0         0         1           sdc         1           tot       1.00000  
+       3  res3                     3      14.15065      41.37724     -82.51324     174.28000         3     s41378n82508w         0         0         0         1           sdc         1           tot       1.00000  

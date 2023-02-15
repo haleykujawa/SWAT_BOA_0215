@@ -1,0 +1,1 @@
+Skipping slr import. File does not exist: C:\Users\kujawa.21\Documents\Margaret A. Davidson Fellowship\Old Woman Creek SWAT\OWC_SWAT_07292021\ParallelLakes\ParallelLakes_decHRUfixDEM\Watershed\Text\climate\OWCMET_UpTo2021\FormatClimateSWAT2012\solar.txt
