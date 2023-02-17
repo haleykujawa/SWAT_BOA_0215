@@ -1,0 +1,17 @@
+name: boa-swat-update
+channels:
+  - r
+dependencies:
+  - r
+  - r-jsonlite
+  - r-dplyr
+  - r-stringr
+  - r-reshape2
+  - r-tidyr
+  - r-here
+  - r-ggplot2
+  - r-scales
+  - r-tibble
+  - r-data.table
+  - r-lubridate
+  - r-r.utils
