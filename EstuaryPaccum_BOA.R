@@ -1,14 +1,11 @@
-write(c('here'),'location.txt',sep = "\n",append=T) #test
-
-rm(list=ls())
-xlib = c("dplyr","splitstackshape","stringr","rlang","reshape2","tidyr","here","rstudioapi","hydroGOF","ggplot2","scales","grid","ggpubr","cowplot",
-         "hydroGOF","tibble","gg.gap","data.table","qdapRegex","lubridate","rjson","jsonlite","R.utils")
+xlib = c("dplyr","stringr","reshape2","tidyr","here","ggplot2",
+         "data.table","lubridate","jsonlite","R.utils")
 lapply(xlib, require, character.only=T) ; rm(xlib)
 
 #########################################################################################
 ########################## place scenario data here #####################################
 #########################################################################################
-setwd(dirname(getActiveDocumentContext()$path))  # set wd to current folder script is saved in
+
 
 
 ######################## Read and set boa directory ##############################################
@@ -20,17 +17,13 @@ trial_dir <- args[1] #boa output directory
 
 
 dir.create(trial_dir,"/TxtInOut")
-setwd('../..')
-copyDirectory(here("TxtInOut"), paste0(trial_dir,"/TxtInOut"), recursive=TRUE)
+copyDirectory(c("TxtInOut"), paste0(trial_dir,"/TxtInOut"), recursive=TRUE)
 
 
 ######################### read in BOA params - json #############################################
 Params <- read_json(paste0(trial_dir,"/parameters.json"))
 
-
-
-# I assume here is where you might pass back and forth data from BOA?
-# write new params based on outputs
+# write new params based on outputs from boa
 p_stl_res1<-Params[[1]] #Can use range 5-20 to start
 p_stl_res2<-Params[[2]]
 p_stl_res3<-Params[[3]]
@@ -44,8 +37,8 @@ sed_stl_res2<-Params[[5]]
 sed_stl_res3<-Params[[6]]
 
 ############### READ IN NUTRIENT PARAMETER FILE ##########################
-
-tmp <- file(here(trial_dir,"TxtInOut",'nutrients.res'))
+nutFilePath<-paste0(trial_dir,"/TxtInOut",'/nutrients.res')
+tmp <- file(nutFilePath)
 open(tmp, "r") #read
 
 #read past headerline and save to rewrite the file
@@ -68,10 +61,14 @@ colnames(DF)<-headers
 
 
 ################# CHANGE RES PARAMS ######################################
+#this is crashing in boa, maybe try just using row and col index 2/20
+#DF$p_stl[DF$name == "nutres1"]     <- sprintf(p_stl_res1, fmt = '%#.5f')
+#DF$p_stl[DF$name == "nutres2"]     <- sprintf(p_stl_res2, fmt = '%#.5f')
+#DF$p_stl[DF$name == "nutres3"]     <- sprintf(p_stl_res3, fmt = '%#.5f')
 
-DF$p_stl[DF$name == "nutres1"]     <- sprintf(p_stl_res1, fmt = '%#.5f')
-DF$p_stl[DF$name == "nutres2"]     <- sprintf(p_stl_res2, fmt = '%#.5f')
-DF$p_stl[DF$name == "nutres3"]     <- sprintf(p_stl_res3, fmt = '%#.5f')
+DF[1,7]    <- sprintf(p_stl_res1, fmt = '%#.5f')
+DF[2,7]     <- sprintf(p_stl_res2, fmt = '%#.5f')
+DF[3,7]     <- sprintf(p_stl_res3, fmt = '%#.5f')
 
 # DF$n_stl[DF$name == "nutres1"]     <-sprintf(n_stl_res1, fmt = '%#.5f')
 # DF$n_stl[DF$name == "nutres2"]     <-sprintf(n_stl_res2, fmt = '%#.5f')
@@ -120,21 +117,21 @@ for (i in c(4:length(DF))){
 
 
 
-file.remove(here(trial_dir,"TxtInOut",'nutrients.res'))
+file.remove(nutFilePath)
 
-sink(here(trial_dir,"TxtInOut",'nutrients.res'), type=c("output"), append = T)
+sink(nutFilePath, type=c("output"), append = T)
 
-write(c(topOfFile),here(trial_dir,"TxtInOut",'nutrients.res'),sep = "\n",append=T)
+write(c(topOfFile),nutFilePath,sep = "\n",append=T)
 
 write(c(paste0(DF[[1]],DF[[2]],DF[[3]],DF[[4]],DF[[5]],DF[[6]],DF[[7]],DF[[8]],DF[[9]],DF[[10]],
-               DF[[11]],DF[[12]],DF[[13]])),here(trial_dir,"TxtInOut",'nutrients.res'),sep="\n",append=T)
+               DF[[11]],DF[[12]],DF[[13]])),nutFilePath,sep="\n",append=T)
 
 
 sink()
 
 ############### READ IN SEDIMENT PARAMETER FILE ##########################
-
-tmp <- file(here(trial_dir,"TxtInOut",'sediment.res'))
+sedFilePath<-paste0(trial_dir,"/TxtInOut",'/sediment.res')
+tmp <- file(sedFilePath)
 open(tmp, "r") #read
 
 #read past headerline and save to rewrite the file
@@ -157,11 +154,13 @@ colnames(DF)<-headers
 
 ################# CHANGE RES PARAMS ######################################
 
-DF$stl_vel[DF$name == "sedres1"]     <- sprintf(sed_stl_res1, fmt = '%#.5f')
-DF$stl_vel[DF$name == "sedres2"]     <- sprintf(sed_stl_res2, fmt = '%#.5f')
-DF$stl_vel[DF$name == "sedres3"]     <- sprintf(sed_stl_res3, fmt = '%#.5f')
+#DF$stl_vel[DF$name == "sedres1"]     <- sprintf(sed_stl_res1, fmt = '%#.5f') #indexing like this is crashing boa, try row col
+#DF$stl_vel[DF$name == "sedres2"]     <- sprintf(sed_stl_res2, fmt = '%#.5f')
+#DF$stl_vel[DF$name == "sedres3"]     <- sprintf(sed_stl_res3, fmt = '%#.5f')
 
-
+DF[1,7]     <- sprintf(sed_stl_res1, fmt = '%#.5f')
+DF[2,7]     <- sprintf(sed_stl_res2, fmt = '%#.5f')
+DF[3,7]     <- sprintf(sed_stl_res3, fmt = '%#.5f')
 
 ################ REWRITE NEW RES PARAMS #################################
 
@@ -187,13 +186,13 @@ for (i in c(3:length(DF))){
 }
 
 
-file.remove(here(trial_dir,"TxtInOut",'sediment.res'))
+file.remove(sedFilePath)
 
-sink(here(trial_dir,"TxtInOut",'sediment.res'), type=c("output"), append = T)
+sink(sedFilePath, type=c("output"), append = T)
 
-write(c(topOfFile),here(trial_dir,"TxtInOut",'sediment.res'),sep = "\n",append=T)
+write(c(topOfFile),sedFilePath,sep = "\n",append=T)
 
-write(c(paste0(DF[[1]],DF[[2]],DF[[3]],DF[[4]],DF[[5]],DF[[6]],DF[[7]])),here(trial_dir,"TxtInOut",'sediment.res'),sep="\n",append=T)
+write(c(paste0(DF[[1]],DF[[2]],DF[[3]],DF[[4]],DF[[5]],DF[[6]],DF[[7]])),sedFilePath,sep="\n",append=T)
 
 
 sink()
@@ -202,18 +201,20 @@ sink()
 
 ######################## Run SWAT ######################################################
 # run SWAT
-setwd(here(trial_dir,"TxtInOut"))
+TxtInOutPath<-paste0(trial_dir,"/TxtInOut")
+setwd(TxtInOutPath)
 x<-system('SWATPlus_60.5.5.exe') #run SWAT
 
+setwd('..')
 #if SWAT crashed tell BOA, otherwise continue on to read SWAT outputs  
-if (x == 157 | x == 72) {
+if (x == 157 | x == 72 | x== 38) {
   trial_status <- "FAILED"
   
   out_data <- list(
     TrialStatus=unbox(trial_status)
   )
   json_data <- toJSON(out_data, pretty = TRUE)
-  write(json_data, "set_trial_status_from_wrapper.json")
+  write(json_data,"trial.json")
   
 }
 
@@ -223,10 +224,10 @@ if (x == 157 | x == 72) {
 ########################################################################################
 ######################### read in observed data  #######################################
 ########################################################################################
+cd('../..') #main directory
 
-
-Paccum_obs<-read.csv(here("obs","Paccum.csv")) #observed data
-Accretion_obs<-read.csv(here("obs","accretion.csv")) #observed data
+Paccum_obs<-read.csv("Paccum.csv") #observed data
+Accretion_obs<-read.csv("accretion.csv") #observed data
 
 ################## Data for BOA ########################################################
 BOA<-data.frame(c("res1","res2","res3"))
@@ -257,7 +258,7 @@ simDF<-headers<-c("jday", "mon",   "day",    "yr", "unit",   "gis_id",   "name",
 
 
 
-tmp <- file(here(trial_dir,"TxtInOut",'reservoir_day.txt'))
+tmp <- file(paste0(TxtInOutPath,'/reservoir_day.txt'))
 open(tmp, "r") #read
 
 #read past headerlines
