@@ -82,3 +82,6 @@ __pycache__/
 
 ## File-based project format:
 *.iws
+
+# Visual Studio
+.vs/

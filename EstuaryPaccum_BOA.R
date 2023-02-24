@@ -9,15 +9,17 @@ lapply(xlib, require, character.only=T) ; rm(xlib)
 
 
 ######################## Read and set boa directory ##############################################
-args <- commandArgs(trailingOnly=TRUE)
-trial_dir <- args[1] #boa output directory
+#args <- commandArgs(trailingOnly=TRUE)
+#trial_dir <- args[1] #boa output directory
 
-#trial_dir <-c("D:/swat_boa/boa_runs_20230210T153723/000000") #for testing
+trial_dir <-c("C:/Users/kujawa.21/source/repos/SWAT_BOA_0215/boa_runs_20230224T181000/000000") #for ktesting
 ####################### copy model into boa directory ###########################################
 
+sub_path = file.path(trial_dir, "TxtInOut")
 
-dir.create(trial_dir,"/TxtInOut")
-copyDirectory(c("TxtInOut"), paste0(trial_dir,"/TxtInOut"), recursive=TRUE)
+dir.create(sub_path)
+
+copyDirectory(here::here("TxtInOut"), sub_path, recursive=TRUE)
 
 
 ######################### read in BOA params - json #############################################
@@ -55,7 +57,7 @@ headers<-c("name", "mid_start", "mid_end",  "mid_n_stl", "n_stl", "mid_p_stl",  
 #read by spacing 
 DF<-strsplit(data1,split=" ")
 DF<-lapply(DF, function(z){ z[z != ""]}) 
-DF<-data.frame(do.call(rbind, DF)) #unlist
+DF<-data.frame(do.call(rbind, DF),stringsAsFactors = FALSE) #unlist
 colnames(DF)<-headers
 
 
@@ -147,7 +149,7 @@ headers<-c("name", "sed_amt",   "d50",  "carbon", "bd", "sed_stl", "stl_vel")
 #read by spacing 
 DF<-strsplit(data1,split=" ")
 DF<-lapply(DF, function(z){ z[z != ""]}) 
-DF<-data.frame(do.call(rbind, DF)) #unlist
+DF<-data.frame(do.call(rbind, DF),stringsAsFactors = FALSE) #unlist
 colnames(DF)<-headers
 
 
@@ -203,31 +205,30 @@ sink()
 # run SWAT
 TxtInOutPath<-paste0(trial_dir,"/TxtInOut")
 setwd(TxtInOutPath)
+
 x<-system('SWATPlus_60.5.5.exe') #run SWAT
 
 setwd('..')
 #if SWAT crashed tell BOA, otherwise continue on to read SWAT outputs  
-if (x == 157 | x == 72 | x== 38) {
+if (x == 157 | x == 72 | x == 38) {
   trial_status <- "FAILED"
   
   out_data <- list(
     TrialStatus=unbox(trial_status)
   )
   json_data <- toJSON(out_data, pretty = TRUE)
-  write(json_data,"trial.json")
+  write(json_data,"output.json")
   
 }
 
-########################### copy textinout to folder ##################################
+
 
 
 ########################################################################################
 ######################### read in observed data  #######################################
 ########################################################################################
-cd('../..') #main directory
-
-Paccum_obs<-read.csv("Paccum.csv") #observed data
-Accretion_obs<-read.csv("accretion.csv") #observed data
+Paccum_obs<-read.csv(here::here("obs","Paccum.csv")) #observed data
+Accretion_obs<-read.csv(here::here("obs","accretion.csv")) #observed data
 
 ################## Data for BOA ########################################################
 BOA<-data.frame(c("res1","res2","res3"))
@@ -243,11 +244,11 @@ colnames(BOA)<-c("res","sed_accum","p_accum")
 
 simDF<-headers<-c("jday", "mon",   "day",    "yr", "unit",   "gis_id",   "name",  "area", "precip", "evap",   "seep", "flo_stor",
                   "sed_stor", "orgn_stor", "sedp_stor", "no3_stor", "solp_stor", "chla_stor", "nh3_stor", "no2_stor", "cbod_stor",
-                  "dox_stor", "san_stor", "sil_stor", "cla_stor", "sag_stor", "lag_stor", "grv_stor",   "null","setl_stor", "flo_in", "sed_in",
+                  "dox_stor", "san_stor", "sil_stor", "cla_stor", "sag_stor", "lag_stor", "grv_stor",   "null","setl_stor","setlp_stor", "flo_in", "sed_in",
                   "orgn_in",  "sedp_in",  "no3_in",   "solp_in",  "chla_in",  "nh3_in", "no2_in", "cbod_in",  "dox_in", "san_in",
-                  "sil_in",   "cla_in",   "sag_in",   "lag_in",     "grv_in",   "null", "setl_in",  "flo_out",  "sed_out", "orgn_out",
+                  "sil_in",   "cla_in",   "sag_in",   "lag_in",     "grv_in",   "null", "setl_in", "setlp_in", "flo_out",  "sed_out", "orgn_out",
                   "sedp_out", "no3_out",  "solp_out",   "chla_out",   "nh3_out",  "no2_out",  "cbod_out", "dox_out",  "san_out",
-                  "sil_out",  "cla_out",  "sag_out",      "lag_out",        "grv_out",           "null", "setl_out")
+                  "sil_out",  "cla_out",  "sag_out",      "lag_out",        "grv_out",           "null", "setl_out","setlp_out")
 
 
 
@@ -279,98 +280,95 @@ DF[,c(1:6,8:(ncol(DF)-1))]<-as.numeric(unlist(DF[,c(1:6,8:(ncol(DF)-1))]))      
 
 #### P accum rate ###################
 #area is in ha - convert to m2
+dir.create(paste0(trial_dir,"/Graphs"))
+GraphPath<-paste0(trial_dir,"/Graphs")
+setwd(GraphPath)
 
-DF$Paccum<-DF$sedp_stor+DF$solp_stor
+DF$Paccum<-DF$setlp_stor*1000/(DF$area*10000) #kg--> g/m2
+DF$Sedaccum<-DF$setl_stor*10^6/(DF$area*10000) #tons -->g/m2
 
 DF1<-select(DF,c("yr","day","mon","name","area","Paccum"))
+
+
 
 #################################### P accum ##########################################################
 
 #################################### res 1 ##############################################################
-res1<-DF1[DF1$name=="res1", ]
-res1<-rbind(res1,NA)
-res1$Paccum_lag<-c(NA,head(res1$Paccum,-1))
+res_num<-"res1"
+res_title<-"res1 - open water/deep"
 
-res1$change_in_storage<-res1$Paccum-res1$Paccum_lag # positive = sediment storage inc., negative = decrease
-#res1$inminout<-res1$sed_in-res1$sed_out
+res1<-DF1[DF1$name==res_num, ]
 
 res1_sedaccum<-res1 %>%
   group_by(yr) %>%
-  summarize(value=sum(change_in_storage,na.rm=T))
-colnames(res1_sedaccum)<-c("year","deltaStorage_kg")
+  summarize(value=sum(Paccum,na.rm=T))
+colnames(res1_sedaccum)<-c("year","value") #value is g/m2/y
 
 
 res1_sedaccum$var<-"sim"
-names(res1_sedaccum)[names(res1_sedaccum) == "deltaStorage_kg"] <- "value_kg_y"
 
 obs_res1<-Paccum_obs[Paccum_obs$depth=="deep",]
 obs_res1$var<-"obs"
 
-sed_rate<-rbind(obs_res1[,c("var","value_kg_y")],res1_sedaccum[,c("var","value_kg_y")])
-sed_rate$res<-"res1"
+sed_rate<-rbind(obs_res1[,c("var","value")],res1_sedaccum[,c("var","value")])
+sed_rate$res<-res_num
 
-BOA$p_accum[BOA$res=="res1"]<- abs(mean(sed_rate$value_kg_y[sed_rate$var=="sim"],
-                                          na.rm=T)-mean(sed_rate$value_kg_y[sed_rate$var=="obs"],na.rm=T))
+BOA$p_accum[BOA$res==res_num]<- abs(mean(sed_rate$value[sed_rate$var=="sim"],
+                                          na.rm=T)-mean(sed_rate$value[sed_rate$var=="obs"],na.rm=T))
 
-ggplot(sed_rate,aes(y=value_kg_y,group=var,color=var))+geom_boxplot()+ggtitle("res1 - open water/deep")
-
+ggplot(sed_rate,aes(y=value,group=var,color=var))+geom_boxplot()+ggtitle(res_title)
+ggsave(paste0(res_num,"_paccum.png"),last_plot(),height=100,width=75,units="mm")
 #################################### res 2 ##############################################################
-res1<-DF1[DF1$name=="res2", ]
-res1<-rbind(res1,NA)
-res1$Paccum_lag<-c(NA,head(res1$Paccum,-1))
+res_num<-"res2"
+res_title<-"res2 - cattail/intermediate"
 
-res1$change_in_storage<-res1$Paccum-res1$Paccum_lag # positive = sediment storage inc., negative = decrease
-#res1$inminout<-res1$sed_in-res1$sed_out
+res1<-DF1[DF1$name==res_num, ]
 
 res1_sedaccum<-res1 %>%
   group_by(yr) %>%
-  summarize(value=sum(change_in_storage,na.rm=T))
-colnames(res1_sedaccum)<-c("year","deltaStorage_kg")
+  summarize(value=sum(Paccum,na.rm=T))
+colnames(res1_sedaccum)<-c("year","value") #value is g/m2/y
 
 
 res1_sedaccum$var<-"sim"
-names(res1_sedaccum)[names(res1_sedaccum) == "deltaStorage_kg"] <- "value_kg_y"
 
-obs_res1<-Paccum_obs[Paccum_obs$depth=="intermediate",]
+obs_res1<-Paccum_obs[Paccum_obs$depth=="deep",]
 obs_res1$var<-"obs"
 
-sed_rate<-rbind(obs_res1[,c("var","value_kg_y")],res1_sedaccum[,c("var","value_kg_y")])
-sed_rate$res<-"res1"
+sed_rate<-rbind(obs_res1[,c("var","value")],res1_sedaccum[,c("var","value")])
+sed_rate$res<-res_num
 
-BOA$p_accum[BOA$res=="res2"]<- abs(mean(sed_rate$value_kg_y[sed_rate$var=="sim"],
-                                        na.rm=T)-mean(sed_rate$value_kg_y[sed_rate$var=="obs"],na.rm=T))
+BOA$p_accum[BOA$res==res_num]<- abs(mean(sed_rate$value[sed_rate$var=="sim"],
+                                         na.rm=T)-mean(sed_rate$value[sed_rate$var=="obs"],na.rm=T))
 
-ggplot(sed_rate,aes(y=value_kg_y,group=var,color=var))+geom_boxplot()+ggtitle("res2 - intermediate")
-
+ggplot(sed_rate,aes(y=value,group=var,color=var))+geom_boxplot()+ggtitle(res_title)
+ggsave(paste0(res_num,"_paccum.png"),last_plot(),height=100,width=75,units="mm")
 
 #################################### res 3 ##############################################################
-res1<-DF1[DF1$name=="res3", ]
-res1<-rbind(res1,NA)
-res1$Paccum_lag<-c(NA,head(res1$Paccum,-1))
+res_num<-"res3"
+res_title<-"res3 - leaf/shallow"
 
-res1$change_in_storage<-res1$Paccum-res1$Paccum_lag # positive = sediment storage inc., negative = decrease
-#res1$inminout<-res1$sed_in-res1$sed_out
+res1<-DF1[DF1$name==res_num, ]
 
 res1_sedaccum<-res1 %>%
   group_by(yr) %>%
-  summarize(value=sum(change_in_storage,na.rm=T))
-colnames(res1_sedaccum)<-c("year","deltaStorage_kg")
+  summarize(value=sum(Paccum,na.rm=T))
+colnames(res1_sedaccum)<-c("year","value") #value is g/m2/y
 
 
 res1_sedaccum$var<-"sim"
-names(res1_sedaccum)[names(res1_sedaccum) == "deltaStorage_kg"] <- "value_kg_y"
 
-obs_res1<-Paccum_obs[Paccum_obs$depth=="shallow",]
+obs_res1<-Paccum_obs[Paccum_obs$depth=="deep",]
 obs_res1$var<-"obs"
 
-sed_rate<-rbind(obs_res1[,c("var","value_kg_y")],res1_sedaccum[,c("var","value_kg_y")])
-sed_rate$res<-"res1"
+sed_rate<-rbind(obs_res1[,c("var","value")],res1_sedaccum[,c("var","value")])
+sed_rate$res<-res_num
 
-BOA$p_accum[BOA$res=="res3"]<- abs(mean(sed_rate$value_kg_y[sed_rate$var=="sim"],
-                                        na.rm=T)-mean(sed_rate$value_kg_y[sed_rate$var=="obs"],na.rm=T))
+BOA$p_accum[BOA$res==res_num]<- abs(mean(sed_rate$value[sed_rate$var=="sim"],
+                                         na.rm=T)-mean(sed_rate$value[sed_rate$var=="obs"],na.rm=T))
 
-ggplot(sed_rate,aes(y=value_kg_y,group=var,color=var))+geom_boxplot()+ggtitle("res3 - shallow")
-
+ggplot(sed_rate,aes(y=value,group=var,color=var))+geom_boxplot()+ggtitle(res_title)
+ggsave(paste0(res_num,"_paccum.png"),last_plot(),height=100,width=75,units="mm")
 
 
 ########################################## SEDIMENT ####################################################
@@ -380,123 +378,86 @@ ggplot(sed_rate,aes(y=value_kg_y,group=var,color=var))+geom_boxplot()+ggtitle("r
 #lag sed stor 
 
 
-DF<-select(DF,c("yr","day","mon","name","area","sed_stor","sed_in","sed_out","setl_stor"))
+DF<-select(DF,c("yr","day","mon","name","area","Sedaccum"))
 
 #################################### sed accum ##########################################################
 
 #################################### res 1 ##############################################################
-res1<-DF[DF$name=="res1", ]
-res1<-rbind(res1,NA)
-res1$sed_stor_lag<-c(NA,head(res1$sed_stor,-1))
+res_num<-"res1"
+res_title<-"res1 - deep/open water"
 
-res1$change_in_storage<-res1$sed_stor-res1$sed_stor_lag # positive = sediment storage inc., negative = decrease
-res1$inminout<-res1$sed_in-res1$sed_out
+res1<-DF[DF$name==res_num, ]
 
 res1_sedaccum<-res1 %>%
   group_by(yr) %>%
-  summarize(value=mean(change_in_storage,na.rm=T))
-colnames(res1_sedaccum)<-c("year","deltaStorage_ton")
+  summarize(value=sum(Sedaccum,na.rm=T))
+colnames(res1_sedaccum)<-c("year","sed_rate_g_m2") 
 
-res1_sedinminout<-res1 %>%
-  group_by(yr) %>%
-  summarize(value=mean(change_in_storage,na.rm=T)) #these are the same
-
-res1_area<-res1 %>%
-  group_by(yr) %>%
-  summarize(value=mean(area,na.rm=T))
-colnames(res1_area)<-c("year","area_ha")
-
-res1_accum<-left_join(res1_sedaccum,res1_area,by=c("year"))
-
-res1_accum$sed_rate_g_m2<-res1_accum$deltaStorage_ton*100/res1_accum$area_ha
-res1_accum$var<-"sim"
-#names(obs_res1)[names(obs_res1) == "sed_rate_g_m2"] <- "sed_rate_g_m2"
+res1_sedaccum$var<-"sim"
 
 obs_res1<-Accretion_obs[Accretion_obs$depth=="deep",]
 obs_res1$var<-"obs"
 
-sed_rate<-rbind(obs_res1[,c("var","sed_rate_g_m2")],res1_accum[,c("var","sed_rate_g_m2")])
-sed_rate$res<-"res1"
+sed_rate<-rbind(obs_res1[,c("var","sed_rate_g_m2")],res1_sedaccum[,c("var","sed_rate_g_m2")])
+sed_rate$res<-res_num
 
-BOA$sed_accum[BOA$res=="res1"]<- abs(mean(sed_rate$sed_rate_g_m2[sed_rate$var=="sim"],
+BOA$sed_accum[BOA$res==res_num]<- abs(mean(sed_rate$sed_rate_g_m2[sed_rate$var=="sim"],
                                           na.rm=T)-mean(sed_rate$sed_rate_g_m2[sed_rate$var=="obs"],na.rm=T))
 
+ggplot(sed_rate,aes(y=sed_rate_g_m2,group=var,color=var))+geom_boxplot()+ggtitle(res_title)
+ggsave(paste0(res_num,"_sedaccum.png"),last_plot(),height=100,width=75,units="mm")
 #################################### res 2 ##############################################################
-res1<-DF[DF$name=="res2", ]
-res1<-rbind(res1,NA)
-res1$sed_stor_lag<-c(NA,head(res1$sed_stor,-1))
+res_num<-"res2"
+res_title<-"res2 - cattail/intermediate"
 
-res1$change_in_storage<-res1$sed_stor-res1$sed_stor_lag # positive = sediment storage inc., negative = decrease
-res1$inminout<-res1$sed_in-res1$sed_out
+res1<-DF[DF$name==res_num, ]
 
 res1_sedaccum<-res1 %>%
   group_by(yr) %>%
-  summarize(value=mean(change_in_storage,na.rm=T))
-colnames(res1_sedaccum)<-c("year","deltaStorage_ton")
+  summarize(value=sum(Sedaccum,na.rm=T))
+colnames(res1_sedaccum)<-c("year","sed_rate_g_m2") 
 
-res1_sedinminout<-res1 %>%
-  group_by(yr) %>%
-  summarize(value=mean(change_in_storage,na.rm=T)) #these are the same
-
-res1_area<-res1 %>%
-  group_by(yr) %>%
-  summarize(value=mean(area,na.rm=T))
-colnames(res1_area)<-c("year","area_ha")
-
-res1_accum<-left_join(res1_sedaccum,res1_area,by=c("year"))
-
-res1_accum$sed_rate_g_m2<-res1_accum$deltaStorage_ton*100/res1_accum$area_ha
-res1_accum$var<-"sim"
-#names(obs_res1)[names(obs_res1) == "sed_rate_g_m2"] <- "sed_rate_g_m2"
+res1_sedaccum$var<-"sim"
 
 obs_res1<-Accretion_obs[Accretion_obs$depth=="deep",]
 obs_res1$var<-"obs"
 
-sed_rate<-rbind(obs_res1[,c("var","sed_rate_g_m2")],res1_accum[,c("var","sed_rate_g_m2")])
-sed_rate$res<-"res2"
+sed_rate<-rbind(obs_res1[,c("var","sed_rate_g_m2")],res1_sedaccum[,c("var","sed_rate_g_m2")])
+sed_rate$res<-res_num
 
-BOA$sed_accum[BOA$res=="res2"]<- abs(mean(sed_rate$sed_rate_g_m2[sed_rate$var=="sim"],
-                                          na.rm=T)-mean(sed_rate$sed_rate_g_m2[sed_rate$var=="obs"],na.rm=T))
+BOA$sed_accum[BOA$res==res_num]<- abs(mean(sed_rate$sed_rate_g_m2[sed_rate$var=="sim"],
+                                           na.rm=T)-mean(sed_rate$sed_rate_g_m2[sed_rate$var=="obs"],na.rm=T))
 
+ggplot(sed_rate,aes(y=sed_rate_g_m2,group=var,color=var))+geom_boxplot()+ggtitle(res_title)
+ggsave(paste0(res_num,"_sedaccum.png"),last_plot(),height=100,width=75,units="mm")
 #################################### res 3 ##############################################################
-res1<-DF[DF$name=="res3", ]
-res1<-rbind(res1,NA)
-res1$sed_stor_lag<-c(NA,head(res1$sed_stor,-1))
+res_num<-"res3"
+res_title<-"res3 - cattail/intermediate"
 
-res1$change_in_storage<-res1$sed_stor-res1$sed_stor_lag # positive = sediment storage inc., negative = decrease
-res1$inminout<-res1$sed_in-res1$sed_out
+res1<-DF[DF$name==res_num, ]
 
 res1_sedaccum<-res1 %>%
   group_by(yr) %>%
-  summarize(value=mean(change_in_storage,na.rm=T))
-colnames(res1_sedaccum)<-c("year","deltaStorage_ton")
+  summarize(value=sum(Sedaccum,na.rm=T))
+colnames(res1_sedaccum)<-c("year","sed_rate_g_m2") 
 
-res1_sedinminout<-res1 %>%
-  group_by(yr) %>%
-  summarize(value=mean(change_in_storage,na.rm=T)) #these are the same
-
-res1_area<-res1 %>%
-  group_by(yr) %>%
-  summarize(value=mean(area,na.rm=T))
-colnames(res1_area)<-c("year","area_ha")
-
-res1_accum<-left_join(res1_sedaccum,res1_area,by=c("year"))
-
-res1_accum$sed_rate_g_m2<-res1_accum$deltaStorage_ton*100/res1_accum$area_ha
-res1_accum$var<-"sim"
-#names(obs_res1)[names(obs_res1) == "sed_rate_g_m2"] <- "sed_rate_g_m2"
+res1_sedaccum$var<-"sim"
 
 obs_res1<-Accretion_obs[Accretion_obs$depth=="deep",]
 obs_res1$var<-"obs"
 
-sed_rate<-rbind(obs_res1[,c("var","sed_rate_g_m2")],res1_accum[,c("var","sed_rate_g_m2")])
-sed_rate$res<-"res3"
+sed_rate<-rbind(obs_res1[,c("var","sed_rate_g_m2")],res1_sedaccum[,c("var","sed_rate_g_m2")])
+sed_rate$res<-res_num
 
-BOA$sed_accum[BOA$res=="res3"]<- abs(mean(sed_rate$sed_rate_g_m2[sed_rate$var=="sim"],
-                                          na.rm=T)-mean(sed_rate$sed_rate_g_m2[sed_rate$var=="obs"],na.rm=T))
+BOA$sed_accum[BOA$res==res_num]<- abs(mean(sed_rate$sed_rate_g_m2[sed_rate$var=="sim"],
+                                           na.rm=T)-mean(sed_rate$sed_rate_g_m2[sed_rate$var=="obs"],na.rm=T))
 
+ggplot(sed_rate,aes(y=sed_rate_g_m2,group=var,color=var))+geom_boxplot()+ggtitle(res_title)
+ggsave(paste0(res_num,"_sedaccum.png"),last_plot(),height=100,width=75,units="mm")
 
 ############# write json output file ######################
+setwd(trial_dir)
+
 out_data <- list(
   res1_sedaccum=list(
     a=BOA$sed_accum[BOA$res=="res1"]

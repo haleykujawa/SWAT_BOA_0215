@@ -2,7 +2,7 @@ name: boa-swat-update
 channels:
   - r
 dependencies:
-  - r
+  - r>4.0
   - r-jsonlite
   - r-dplyr
   - r-stringr
