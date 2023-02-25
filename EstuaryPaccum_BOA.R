@@ -9,10 +9,10 @@ lapply(xlib, require, character.only=T) ; rm(xlib)
 
 
 ######################## Read and set boa directory ##############################################
-# args <- commandArgs(trailingOnly=TRUE)
-# trial_dir <- args[1] #boa output directory
+args <- commandArgs(trailingOnly=TRUE)
+trial_dir <- args[1] #boa output directory
 
-trial_dir <-c("C:/Users/kujawa.21/source/repos/SWAT_BOA_0215/boa_runs_20230224T181000/000000") #for ktesting
+# trial_dir <-c("C:/Users/kujawa.21/source/repos/SWAT_BOA_0215/boa_runs_20230224T181000/000000") #for ktesting
 ####################### copy model into boa directory ###########################################
 sub_path <- file.path(trial_dir, "TxtInOut")
 
