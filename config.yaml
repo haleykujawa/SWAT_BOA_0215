@@ -7,7 +7,7 @@ optimization_options:
               metric: mean
 
     scheduler:
-        total_trials: 1
+        total_trials: 4
 
 parameters:
     x0:

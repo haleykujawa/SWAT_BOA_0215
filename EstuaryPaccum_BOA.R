@@ -9,13 +9,12 @@ lapply(xlib, require, character.only=T) ; rm(xlib)
 
 
 ######################## Read and set boa directory ##############################################
-#args <- commandArgs(trailingOnly=TRUE)
-#trial_dir <- args[1] #boa output directory
+args <- commandArgs(trailingOnly=TRUE)
+trial_dir <- args[1] #boa output directory
 
-trial_dir <-c("C:/Users/kujawa.21/source/repos/SWAT_BOA_0215/boa_runs_20230224T181000/000000") #for ktesting
+# trial_dir <-c("C:/Users/kujawa.21/source/repos/SWAT_BOA_0215/boa_runs_20230224T181000/000000") #for ktesting
 ####################### copy model into boa directory ###########################################
-
-sub_path = file.path(trial_dir, "TxtInOut")
+sub_path <- file.path(trial_dir, "TxtInOut")
 
 dir.create(sub_path)
 
@@ -211,10 +210,14 @@ x<-system('SWATPlus_60.5.5.exe') #run SWAT
 setwd('..')
 #if SWAT crashed tell BOA, otherwise continue on to read SWAT outputs  
 if (x == 157 | x == 72 | x == 38) {
+  print("\n\n\n\n\n\n")
+  print(x)
+
   trial_status <- "FAILED"
   
   out_data <- list(
-    TrialStatus=unbox(trial_status)
+    TrialStatus=unbox(trial_status),
+    error=x
   )
   json_data <- toJSON(out_data, pretty = TRUE)
   write(json_data,"output.json")
