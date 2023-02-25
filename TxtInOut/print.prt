@@ -1,12 +1,12 @@
 print.prt: written by SWAT+ Toolbox v0.7.6                                   
 nyskip   day_start    yrc_start   day_end   yrc_end   interval                                     
-0        0            0           0         0         0
+5        0            0           0         0         0
 aa_int_cnt                                                                                         
 0                                                                                                  
 csvout    dbout         cdfout
 n         n             n
 soilout   mgtout     hydcon      fdcout
-y         y          n           n
+n         n          n           n
 objects           daily     monthly        yearly          avann
 basin_wb              n           n             n              n
 basin_nb              n           n             n              n

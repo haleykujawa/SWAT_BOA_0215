@@ -5,9 +5,17 @@ optimization_options:
               metric: mean
             - name: res2_sedaccum
               metric: mean
+            - name: res3_sedaccum
+              metric: mean
+            - name: res1_paccum
+              metric: mean
+            - name: res2_paccum
+              metric: mean
+            - name: res3_paccum
+              metric: mean
 
     scheduler:
-        total_trials: 4
+        total_trials: 75
 
 parameters:
     x0:
@@ -23,15 +31,15 @@ parameters:
         'type': 'range'
         'value_type': 'float'
     x3:
-        'bounds': [ 0.9, 1]
+        'bounds': [ 0, 1]
         'type': 'range'
         'value_type': 'float'
     x4:
-        'bounds': [ 0.9, 1 ]
+        'bounds': [ 0, 1 ]
         'type': 'range'
         'value_type': 'float'
     x5:
-        'bounds': [ 0.9, 1]
+        'bounds': [ 0, 1]
         'type': 'range'
         'value_type': 'float'
 
