@@ -1,24 +1,24 @@
 "AR..mm.y.1.","location","depth","plant","res","BD_g_cm","sed_rate_g_m2"
-2.564102564,"Out","shallow","floating leaves","res3",0.21,5.3846153844e-06
-2.298850575,"Out","shallow","floating leaves","res3",0.21,4.8275862075e-06
-2.666666667,"Out","shallow","floating leaves","res3",0.21,5.6000000007e-06
-2.222222222,"Out","intermediate","cattail","res2",0.5,1.111111111e-05
-1.785714286,"Out","intermediate","cattail","res2",0.5,8.92857143e-06
-1.754385965,"Out","deep","open water","res1",0.6,1.052631579e-05
-2.02020202,"Out","deep","open water","res1",0.6,1.212121212e-05
-4,"Back","shallow","floating leaves","res3",0.28,1.12e-05
-2.985074627,"Back","shallow","floating leaves","res3",0.28,8.3582089556e-06
-1.941747573,"Back","shallow","floating leaves","res3",0.28,5.4368932044e-06
-2.272727273,"Back","intermediate","cattail","res2",0.34,7.7272727282e-06
-2.197802198,"Back","intermediate","cattail","res2",0.34,7.4725274732e-06
-2.5,"Back","deep","open water","res1",0.47,1.175e-05
-2.247191011,"Back","deep","open water","res1",0.47,1.05617977517e-05
-1.923076923,"Back","deep","open water","res1",0.47,9.0384615381e-06
-2.857142857,"Mid estuary","shallow","floating leaves","res3",0.4,1.1428571428e-05
-2.197802198,"Mid estuary","shallow","floating leaves","res3",0.4,8.791208792e-06
-1.526717557,"Mid estuary","shallow","floating leaves","res3",0.4,6.106870228e-06
-1.265822785,"Mid estuary","intermediate","cattail","res2",0.34,4.303797469e-06
-1.183431953,"Mid estuary","intermediate","cattail","res2",0.34,4.0236686402e-06
-3.125,"Mid estuary","deep","open water","res1",0.43,1.34375e-05
-2.06185567,"Mid estuary","deep","open water","res1",0.43,8.865979381e-06
-1.149425287,"Mid estuary","deep","open water","res1",0.43,4.9425287341e-06
+2.564102564,"Out","shallow","cattail","res2",0.21,538.46153844
+2.298850575,"Out","shallow","cattail","res2",0.21,482.75862075
+2.666666667,"Out","shallow","cattail","res2",0.21,560.00000007
+2.222222222,"Out","intermediate","floating leaves","res3",0.5,1111.111111
+1.785714286,"Out","intermediate","floating leaves","res3",0.5,892.857143
+1.754385965,"Out","deep","open water","res1",0.6,1052.631579
+2.02020202,"Out","deep","open water","res1",0.6,1212.121212
+4,"Back","shallow","cattail","res2",0.28,1120
+2.985074627,"Back","shallow","cattail","res2",0.28,835.82089556
+1.941747573,"Back","shallow","cattail","res2",0.28,543.68932044
+2.272727273,"Back","intermediate","floating leaves","res3",0.34,772.72727282
+2.197802198,"Back","intermediate","floating leaves","res3",0.34,747.25274732
+2.5,"Back","deep","open water","res1",0.47,1175
+2.247191011,"Back","deep","open water","res1",0.47,1056.17977517
+1.923076923,"Back","deep","open water","res1",0.47,903.84615381
+2.857142857,"Mid estuary","shallow","cattail","res2",0.4,1142.8571428
+2.197802198,"Mid estuary","shallow","cattail","res2",0.4,879.1208792
+1.526717557,"Mid estuary","shallow","cattail","res2",0.4,610.6870228
+1.265822785,"Mid estuary","intermediate","floating leaves","res3",0.34,430.3797469
+1.183431953,"Mid estuary","intermediate","floating leaves","res3",0.34,402.36686402
+3.125,"Mid estuary","deep","open water","res1",0.43,1343.75
+2.06185567,"Mid estuary","deep","open water","res1",0.43,886.5979381
+1.149425287,"Mid estuary","deep","open water","res1",0.43,494.25287341
