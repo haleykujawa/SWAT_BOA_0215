@@ -9,10 +9,10 @@ lapply(xlib, require, character.only=T) ; rm(xlib)
 
 
 ######################## Read and set boa directory ##############################################
-args <- commandArgs(trailingOnly=TRUE)
-trial_dir <- args[1] #boa output directory
+# args <- commandArgs(trailingOnly=TRUE)
+# trial_dir <- args[1] #boa output directory
 
-# trial_dir <-c("C:/Users/kujawa.21/source/repos/SWAT_BOA_0215/boa_runs_20230224T181000/000000") #for ktesting
+trial_dir <-c("C:/Users/kujawa.21/source/repos/SWAT_BOA_0215/boa_runs_20230224T181000/000000") #for ktesting
 ####################### copy model into boa directory ###########################################
 sub_path <- file.path(trial_dir, "TxtInOut")
 
@@ -310,7 +310,7 @@ colnames(res1_sedaccum)<-c("year","value") #value is g/m2/y
 
 res1_sedaccum$var<-"sim"
 
-obs_res1<-Paccum_obs[Paccum_obs$depth=="deep",]
+obs_res1<-Paccum_obs[Paccum_obs$res==res_num,]
 obs_res1$var<-"obs"
 
 sed_rate<-rbind(obs_res1[,c("var","value")],res1_sedaccum[,c("var","value")])
@@ -323,7 +323,7 @@ ggplot(sed_rate,aes(y=value,group=var,color=var))+geom_boxplot()+ggtitle(res_tit
 ggsave(paste0(res_num,"_paccum.png"),last_plot(),height=100,width=75,units="mm")
 #################################### res 2 ##############################################################
 res_num<-"res2"
-res_title<-"res2 - cattail/intermediate"
+res_title<-"res2 - cattail/shallow"
 
 res1<-DF1[DF1$name==res_num, ]
 
@@ -335,7 +335,7 @@ colnames(res1_sedaccum)<-c("year","value") #value is g/m2/y
 
 res1_sedaccum$var<-"sim"
 
-obs_res1<-Paccum_obs[Paccum_obs$depth=="deep",]
+obs_res1<-Paccum_obs[Paccum_obs$res==res_num,]
 obs_res1$var<-"obs"
 
 sed_rate<-rbind(obs_res1[,c("var","value")],res1_sedaccum[,c("var","value")])
@@ -349,7 +349,7 @@ ggsave(paste0(res_num,"_paccum.png"),last_plot(),height=100,width=75,units="mm")
 
 #################################### res 3 ##############################################################
 res_num<-"res3"
-res_title<-"res3 - leaf/shallow"
+res_title<-"res3 - leaf/intermediate"
 
 res1<-DF1[DF1$name==res_num, ]
 
@@ -361,7 +361,7 @@ colnames(res1_sedaccum)<-c("year","value") #value is g/m2/y
 
 res1_sedaccum$var<-"sim"
 
-obs_res1<-Paccum_obs[Paccum_obs$depth=="deep",]
+obs_res1<-Paccum_obs[Paccum_obs$res==res_num,]
 obs_res1$var<-"obs"
 
 sed_rate<-rbind(obs_res1[,c("var","value")],res1_sedaccum[,c("var","value")])
@@ -398,7 +398,7 @@ colnames(res1_sedaccum)<-c("year","sed_rate_g_m2")
 
 res1_sedaccum$var<-"sim"
 
-obs_res1<-Accretion_obs[Accretion_obs$depth=="deep",]
+obs_res1<-Accretion_obs[Accretion_obs$res==res_num,]
 obs_res1$var<-"obs"
 
 sed_rate<-rbind(obs_res1[,c("var","sed_rate_g_m2")],res1_sedaccum[,c("var","sed_rate_g_m2")])
@@ -411,7 +411,7 @@ ggplot(sed_rate,aes(y=sed_rate_g_m2,group=var,color=var))+geom_boxplot()+ggtitle
 ggsave(paste0(res_num,"_sedaccum.png"),last_plot(),height=100,width=75,units="mm")
 #################################### res 2 ##############################################################
 res_num<-"res2"
-res_title<-"res2 - cattail/intermediate"
+res_title<-"res2 - cattail/shallow"
 
 res1<-DF[DF$name==res_num, ]
 
@@ -422,7 +422,7 @@ colnames(res1_sedaccum)<-c("year","sed_rate_g_m2")
 
 res1_sedaccum$var<-"sim"
 
-obs_res1<-Accretion_obs[Accretion_obs$depth=="deep",]
+obs_res1<-Accretion_obs[Accretion_obs$res==res_num,]
 obs_res1$var<-"obs"
 
 sed_rate<-rbind(obs_res1[,c("var","sed_rate_g_m2")],res1_sedaccum[,c("var","sed_rate_g_m2")])
@@ -435,7 +435,7 @@ ggplot(sed_rate,aes(y=sed_rate_g_m2,group=var,color=var))+geom_boxplot()+ggtitle
 ggsave(paste0(res_num,"_sedaccum.png"),last_plot(),height=100,width=75,units="mm")
 #################################### res 3 ##############################################################
 res_num<-"res3"
-res_title<-"res3 - cattail/intermediate"
+res_title<-"res3 - floating leaf/intermediate"
 
 res1<-DF[DF$name==res_num, ]
 
@@ -446,7 +446,7 @@ colnames(res1_sedaccum)<-c("year","sed_rate_g_m2")
 
 res1_sedaccum$var<-"sim"
 
-obs_res1<-Accretion_obs[Accretion_obs$depth=="deep",]
+obs_res1<-Accretion_obs[Accretion_obs$res==res_num,]
 obs_res1$var<-"obs"
 
 sed_rate<-rbind(obs_res1[,c("var","sed_rate_g_m2")],res1_sedaccum[,c("var","sed_rate_g_m2")])
@@ -467,7 +467,20 @@ out_data <- list(
   ),
   res2_sedaccum=list(
     a=BOA$sed_accum[BOA$res=="res2"]
+  ),
+  res3_sedaccum=list(
+    a=BOA$sed_accum[BOA$res=="res3"]
+  ),
+  res1_paccum=list(
+    a=BOA$p_accum[BOA$res=="res1"]
+  ),
+  res2_paccum=list(
+    a=BOA$p_accum[BOA$res=="res2"]
+  ),
+  res3_paccum=list(
+    a=BOA$p_accum[BOA$res=="res3"]
   )
+  
 )
 json_data <- toJSON(out_data,pretty=T)
 setwd(trial_dir)
