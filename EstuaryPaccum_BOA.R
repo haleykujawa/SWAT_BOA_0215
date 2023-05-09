@@ -9,10 +9,10 @@ lapply(xlib, require, character.only=T) ; rm(xlib)
 
 
 ######################## Read and set boa directory ##############################################
-args <- commandArgs(trailingOnly=TRUE)
-trial_dir <- args[1] #boa output directory
+# args <- commandArgs(trailingOnly=TRUE)
+# trial_dir <- args[1] #boa output directory
 
-# trial_dir <-c("C:/Users/kujawa.21/source/repos/SWAT_BOA_0215/boa_runs_20230224T181000/000000") #for ktesting
+trial_dir <-c("C:\\Users\\kujawa.21\\source\\repos\\SWAT_BOA_0215\\TxtInOut - Final params") #for testing
 ####################### copy model into boa directory ###########################################
 sub_path <- file.path(trial_dir, "TxtInOut")
 
@@ -205,7 +205,7 @@ sink()
 TxtInOutPath<-paste0(trial_dir,"/TxtInOut")
 setwd(TxtInOutPath)
 
-x<-system('SWATPlus_60.5.5.exe') #run SWAT
+x<-system('SWATPlus_60.5.5.exe',ignore.stdout = F, ignore.stderr = F) #run SWAT
 
 setwd('..')
 #if SWAT crashed tell BOA, otherwise continue on to read SWAT outputs  
@@ -227,11 +227,21 @@ if (x == 157 | x == 72 | x == 38) {
 
 
 
-########################################################################################
+
 ######################### read in observed data  #######################################
-########################################################################################
-Paccum_obs<-read.csv(here::here("obs","Paccum.csv")) #observed data
-Accretion_obs<-read.csv(here::here("obs","accretion.csv")) #observed data
+# reprocess obs data from cores and changes format
+# Paccum_obs<-read.csv(here::here("obs","Paccum.csv")) #observed data
+# Accretion_obs<-read.csv(here::here("obs","accretion.csv")) #observed data
+
+obs<-read.csv(here::here("obs","BOA_calibration_data.csv"))
+
+Paccum_obs<-obs %>% 
+  filter(grepl('Paccum',variable))
+
+Accretion_obs <-obs %>% 
+  filter(grepl('Accretion',variable)) %>% 
+  rename( "sed_rate_g_m2" = "value")
+
 
 ################## Data for BOA ########################################################
 BOA<-data.frame(c("res1","res2","res3"))
@@ -256,9 +266,7 @@ simDF<-headers<-c("jday", "mon",   "day",    "yr", "unit",   "gis_id",   "name",
 
 
 
-################################################################################
 ################## Read in hru output ##########################################
-################################################################################
 
 
 
@@ -294,11 +302,13 @@ DF1<-select(DF,c("yr","day","mon","name","area","Paccum"))
 
 
 
-#################################### P accum ##########################################################
+#################################### P ACCUM ##########################################################
 
 #################################### res 1 ##############################################################
 res_num<-"res1"
-res_title<-"res1 - open water/deep"
+res_title<-"open water/deep"
+
+
 
 res1<-DF1[DF1$name==res_num, ]
 
@@ -319,11 +329,20 @@ sed_rate$res<-res_num
 BOA$p_accum[BOA$res==res_num]<- abs(mean(sed_rate$value[sed_rate$var=="sim"],
                                           na.rm=T)-mean(sed_rate$value[sed_rate$var=="obs"],na.rm=T))
 
-ggplot(sed_rate,aes(y=value,group=var,color=var))+geom_boxplot()+ggtitle(res_title)
-ggsave(paste0(res_num,"_paccum.png"),last_plot(),height=100,width=75,units="mm")
+
+
+res1_paccum<-ggplot(sed_rate,aes(x=res_num,y=value,group=var,fill=var))+geom_boxplot()+ggtitle(res_title)+ylab(bquote('P accumulation ' (~g ~m^-2 ~y^-1)))+xlab("")+
+scale_fill_manual(name="", labels=c("obs" = " Observed - Sediment cores", "sim" = "Simulated - SWAT+"),values=c('white','grey'))+
+  stat_summary(fun.y=mean, geom="point", shape=18, size=6, color="red", fill="red",aes(group=var),position=position_dodge(0.75))+
+  scale_y_continuous(limits=c(0,2.5),breaks=seq(0,2.5,by=0.5))+
+  theme(panel.grid.minor = element_blank(), panel.grid.major = element_blank(),
+        panel.background = element_blank(),text = element_text(size = 16),
+        panel.border = element_rect(colour = "black", fill=NA, linewidth=1),legend.key=element_rect(fill="white"),axis.text.x=element_blank(),axis.ticks.x=element_blank(),legend.position='bottom')
+
+ggsave(paste0(res_num,"_paccum.png"),last_plot(),height=150,width=150,units="mm")
 #################################### res 2 ##############################################################
 res_num<-"res2"
-res_title<-"res2 - cattail/shallow"
+res_title<-"cattail/shallow"
 
 res1<-DF1[DF1$name==res_num, ]
 
@@ -344,12 +363,21 @@ sed_rate$res<-res_num
 BOA$p_accum[BOA$res==res_num]<- abs(mean(sed_rate$value[sed_rate$var=="sim"],
                                          na.rm=T)-mean(sed_rate$value[sed_rate$var=="obs"],na.rm=T))
 
-ggplot(sed_rate,aes(y=value,group=var,color=var))+geom_boxplot()+ggtitle(res_title)
-ggsave(paste0(res_num,"_paccum.png"),last_plot(),height=100,width=75,units="mm")
+
+
+res2_paccum<-ggplot(sed_rate,aes(x=res_num,y=value,group=var,fill=var))+geom_boxplot()+ggtitle(res_title)+ylab(bquote('P accumulation ' (~g ~m^-2 ~y^-1)))+xlab("")+
+  scale_fill_manual(name="", labels=c("obs" = " Observed - Sediment cores", "sim" = "Simulated - SWAT+"),values=c('white','grey'))+
+  stat_summary(fun.y=mean, geom="point", shape=18, size=6, color="red", fill="red",aes(group=var),position=position_dodge(0.75))+
+  scale_y_continuous(limits=c(0,2.5),breaks=seq(0,2.5,by=0.5))+
+  theme(panel.grid.minor = element_blank(), panel.grid.major = element_blank(),
+        panel.background = element_blank(),text = element_text(size = 16),
+        panel.border = element_rect(colour = "black", fill=NA, linewidth=1),legend.key=element_rect(fill="white"),axis.text.x=element_blank(),axis.ticks.x=element_blank(),legend.position='bottom')
+
+ggsave(paste0(res_num,"_paccum.png"),last_plot(),height=150,width=150,units="mm")
 
 #################################### res 3 ##############################################################
 res_num<-"res3"
-res_title<-"res3 - leaf/intermediate"
+res_title<-"leaf/intermediate"
 
 res1<-DF1[DF1$name==res_num, ]
 
@@ -370,8 +398,17 @@ sed_rate$res<-res_num
 BOA$p_accum[BOA$res==res_num]<- abs(mean(sed_rate$value[sed_rate$var=="sim"],
                                          na.rm=T)-mean(sed_rate$value[sed_rate$var=="obs"],na.rm=T))
 
-ggplot(sed_rate,aes(y=value,group=var,color=var))+geom_boxplot()+ggtitle(res_title)
-ggsave(paste0(res_num,"_paccum.png"),last_plot(),height=100,width=75,units="mm")
+
+
+res3_paccum<-ggplot(sed_rate,aes(x=res_num,y=value,group=var,fill=var))+geom_boxplot()+ggtitle(res_title)+ylab(bquote('P accumulation ' (~g ~m^-2 ~y^-1)))+xlab("")+
+  scale_fill_manual(name="", labels=c("obs" = " Observed - Sediment cores", "sim" = "Simulated - SWAT+"),values=c('white','grey'))+
+  stat_summary(fun.y=mean, geom="point", shape=18, size=6, color="red", fill="red",aes(group=var),position=position_dodge(0.75))+
+  scale_y_continuous(limits=c(0,2.5),breaks=seq(0,2.5,by=0.5))+
+  theme(panel.grid.minor = element_blank(), panel.grid.major = element_blank(),
+        panel.background = element_blank(),text = element_text(size = 16),
+        panel.border = element_rect(colour = "black", fill=NA, linewidth=1),legend.key=element_rect(fill="white"),axis.text.x=element_blank(),axis.ticks.x=element_blank(),legend.position='bottom')
+
+ggsave(paste0(res_num,"_paccum.png"),last_plot(),height=150,width=150,units="mm")
 
 
 ########################################## SEDIMENT ####################################################
@@ -387,7 +424,7 @@ DF<-select(DF,c("yr","day","mon","name","area","Sedaccum"))
 
 #################################### res 1 ##############################################################
 res_num<-"res1"
-res_title<-"res1 - deep/open water"
+res_title<-"deep/open water"
 
 res1<-DF[DF$name==res_num, ]
 
@@ -407,11 +444,19 @@ sed_rate$res<-res_num
 BOA$sed_accum[BOA$res==res_num]<- abs(mean(sed_rate$sed_rate_g_m2[sed_rate$var=="sim"],
                                           na.rm=T)-mean(sed_rate$sed_rate_g_m2[sed_rate$var=="obs"],na.rm=T))
 
-ggplot(sed_rate,aes(y=sed_rate_g_m2,group=var,color=var))+geom_boxplot()+ggtitle(res_title)
-ggsave(paste0(res_num,"_sedaccum.png"),last_plot(),height=100,width=75,units="mm")
+
+
+res1_sedaccum_plot<-ggplot(sed_rate,aes(x=res_num,y=sed_rate_g_m2,group=var,fill=var))+geom_boxplot()+ggtitle(res_title)+ylab(bquote('Sediment accretion ' (~g ~m^-2 ~y^-1)))+xlab("")+
+  scale_fill_manual(name="", labels=c("obs" = " Observed - Sediment cores", "sim" = "Simulated - SWAT+"),values=c('white','grey'))+
+  stat_summary(fun.y=mean, geom="point", shape=18, size=6, color="red", fill="red",aes(group=var),position=position_dodge(0.75))+
+  theme(panel.grid.minor = element_blank(), panel.grid.major = element_blank(),
+        panel.background = element_blank(),text = element_text(size = 16),
+        panel.border = element_rect(colour = "black", fill=NA, linewidth=1),legend.key=element_rect(fill="white"),axis.text.x=element_blank(),axis.ticks.x=element_blank(),legend.position='bottom')
+
+ggsave(paste0(res_num,"_sedaccum.png"),last_plot(),height=150,width=150,units="mm")
 #################################### res 2 ##############################################################
 res_num<-"res2"
-res_title<-"res2 - cattail/shallow"
+res_title<-"cattail/shallow"
 
 res1<-DF[DF$name==res_num, ]
 
@@ -431,11 +476,19 @@ sed_rate$res<-res_num
 BOA$sed_accum[BOA$res==res_num]<- abs(mean(sed_rate$sed_rate_g_m2[sed_rate$var=="sim"],
                                            na.rm=T)-mean(sed_rate$sed_rate_g_m2[sed_rate$var=="obs"],na.rm=T))
 
-ggplot(sed_rate,aes(y=sed_rate_g_m2,group=var,color=var))+geom_boxplot()+ggtitle(res_title)
-ggsave(paste0(res_num,"_sedaccum.png"),last_plot(),height=100,width=75,units="mm")
+
+res2_sedaccum_plot<-ggplot(sed_rate,aes(x=res_num,y=sed_rate_g_m2,group=var,fill=var))+geom_boxplot()+ggtitle(res_title)+ylab(bquote('Sediment accumulation ' (~g ~m^-2 ~y^-1)))+xlab("")+
+  scale_fill_manual(name="", labels=c("obs" = " Observed - Sediment cores", "sim" = "Simulated - SWAT+"),values=c('white','grey'))+
+  stat_summary(fun.y=mean, geom="point", shape=18, size=6, color="red", fill="red",aes(group=var),position=position_dodge(0.75))+
+  geom_text(label=param,x=res_num,y=y_text)+
+  theme(panel.grid.minor = element_blank(), panel.grid.major = element_blank(),
+        panel.background = element_blank(),text = element_text(size = 16),
+        panel.border = element_rect(colour = "black", fill=NA, linewidth=1),legend.key=element_rect(fill="white"),axis.text.x=element_blank(),axis.ticks.x=element_blank(),legend.position='bottom')
+
+ggsave(paste0(res_num,"_sedaccum.png"),last_plot(),height=150,width=150,units="mm")
 #################################### res 3 ##############################################################
 res_num<-"res3"
-res_title<-"res3 - floating leaf/intermediate"
+res_title<-"floating leaf/intermediate"
 
 res1<-DF[DF$name==res_num, ]
 
@@ -455,9 +508,35 @@ sed_rate$res<-res_num
 BOA$sed_accum[BOA$res==res_num]<- abs(mean(sed_rate$sed_rate_g_m2[sed_rate$var=="sim"],
                                            na.rm=T)-mean(sed_rate$sed_rate_g_m2[sed_rate$var=="obs"],na.rm=T))
 
-ggplot(sed_rate,aes(y=sed_rate_g_m2,group=var,color=var))+geom_boxplot()+ggtitle(res_title)
-ggsave(paste0(res_num,"_sedaccum.png"),last_plot(),height=100,width=75,units="mm")
+y_text<-max(sed_rate$sed_rate_g_m2)-5
 
+res3_sedaccum_plot<-ggplot(sed_rate,aes(x=res_num,y=sed_rate_g_m2,group=var,fill=var))+geom_boxplot()+ggtitle(res_title)+ylab(bquote('Sediment accumulation ' (~g ~m^-2 ~y^-1)))+xlab("")+
+  scale_fill_manual(name="", labels=c("obs" = " Observed - Sediment cores", "sim" = "Simulated - SWAT+"),values=c('white','grey'))+
+  stat_summary(fun.y=mean, geom="point", shape=18, size=6, color="red", fill="red",aes(group=var),position=position_dodge(0.75))+
+  theme(panel.grid.minor = element_blank(), panel.grid.major = element_blank(),
+        panel.background = element_blank(),text = element_text(size = 16),
+        panel.border = element_rect(colour = "black", fill=NA, linewidth=1),legend.key=element_rect(fill="white"),axis.text.x=element_blank(),axis.ticks.x=element_blank(),legend.position = 'bottom')
+
+ggsave(paste0(res_num,"_sedaccum.png"),last_plot(),height=150,width=150,units="mm")
+
+############# combined plot ###############################
+
+figure<-ggarrange(res1_paccum + rremove("xlab")+  geom_text(label=paste("p_stl = ",round(p_stl_res1,2)),x=res_num,y=0), #deep--int--shallow
+          res3_paccum + rremove("xlab")+ ylab("")+  geom_text(label=paste("p_stl = ",round(p_stl_res3,2)),x=res_num,y=0),
+          res2_paccum+ rremove("xlab")+ ylab("")+  geom_text(label=paste("p_stl = ",round(p_stl_res2,2)),x=res_num,y=0),
+
+          res1_sedaccum_plot+ rremove("xlab")+ggtitle("")+  geom_text(label=paste("sed_stl = ",round(sed_stl_res1,2)),x=res_num,y=0)+
+            scale_y_continuous(limits=c(0,2250),breaks=seq(0,2250,by=500)), # add scale here so if plots get cut off you can still see them in individual plots
+          
+          res3_sedaccum_plot+ rremove("xlab")+ ylab("")+ggtitle("")+  geom_text(label=paste("sed_stl = ",round(sed_stl_res3,2)),x=res_num,y=0)+
+            scale_y_continuous(limits=c(0,2250),breaks=seq(0,2250,by=500)),
+          
+          res2_sedaccum_plot+ rremove("xlab")+ ylab("")+ggtitle("")+  geom_text(label=paste("sed_stl = ",round(sed_stl_res2,2)),x=res_num,y=0)+
+            scale_y_continuous(limits=c(0,2250),breaks=seq(0,2250,by=500)),
+
+          nrow=2,ncol=3,common.legend = T,align='hv')
+
+ggsave('Final_plot.png',figure,height=190,width=300,units="mm")
 ############# write json output file ######################
 setwd(trial_dir)
 
